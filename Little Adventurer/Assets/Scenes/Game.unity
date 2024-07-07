@@ -108,8 +108,8 @@ NavMeshSettings:
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
-    agentSlope: 45
-    agentClimb: 0.4
+    agentSlope: 0
+    agentClimb: 0.1
     ledgeDropHeight: 0
     maxJumpAcrossDistance: 0
     minRegionArea: 2
@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 835201c8b12ad584b9d37b227ddf093e, type: 2}
 --- !u!114 &116985036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1852,6 +1852,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1298533281, guid: ff84171cd2a1dea4393a899ceb07b89f, type: 3}
+      propertyPath: m_SkinWidth
+      value: 0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4323705310218211701, guid: ff84171cd2a1dea4393a899ceb07b89f, type: 3}
+      propertyPath: Gravity
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4323705310218211701, guid: ff84171cd2a1dea4393a899ceb07b89f, type: 3}
+      propertyPath: _movementSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5458276002204155781, guid: ff84171cd2a1dea4393a899ceb07b89f, type: 3}
       propertyPath: m_Name
       value: Enemy_01
@@ -1866,7 +1878,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5458276002204155783, guid: ff84171cd2a1dea4393a899ceb07b89f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0000019073486
+      value: 0.43
       objectReference: {fileID: 0}
     - target: {fileID: 5458276002204155783, guid: ff84171cd2a1dea4393a899ceb07b89f, type: 3}
       propertyPath: m_LocalPosition.z
