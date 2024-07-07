@@ -8,8 +8,12 @@ public class PlayerInput : MonoBehaviour
 
     #region Fields
 
+    private Character _character;
+
     private float _horizontalInput;
     private float _verticalInput;
+
+    private bool isMouseButtonDown = false;
 
     #endregion
 
@@ -20,8 +24,25 @@ public class PlayerInput : MonoBehaviour
 
     #region Private Methods
 
+    private void Awake()
+    {
+        _character = GetComponent<Character>();
+    }
+
     private void Update()
     {
+        if (!isMouseButtonDown && (Time.timeScale != 0))
+        {
+            isMouseButtonDown = Input.GetMouseButtonDown(0);
+        }
+
+        if (isMouseButtonDown)
+        {
+            _character.SetState(StateType.State_attack);
+            enabled = false;
+            return;
+        }
+
         _horizontalInput = Input.GetAxisRaw("Horizontal");
         _verticalInput = Input.GetAxisRaw("Vertical");
     }
@@ -29,6 +50,7 @@ public class PlayerInput : MonoBehaviour
 
     private void OnDisable()
     {
+        isMouseButtonDown = false;
         _horizontalInput = 0f;
         _verticalInput = 0f;
     }

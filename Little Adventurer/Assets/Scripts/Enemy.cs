@@ -35,7 +35,7 @@ public class Enemy : Character
         base.FixedUpdate();
     }
 
-    protected override void ConfigureMovement()
+    public override void ConfigureMovement()
     {
         bool farFromPlayer = Vector3.Distance(_targetPlayer.position, transform.position) >= _navMeshAgent.stoppingDistance;
 

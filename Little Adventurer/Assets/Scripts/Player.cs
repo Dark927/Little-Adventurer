@@ -31,10 +31,11 @@ public class Player : Character
     protected override void FixedUpdate()
     {
         base.FixedUpdate();
+
         _characterController.Move(_movementVelocity);
     }
 
-    protected override void ConfigureMovement()
+    public override void ConfigureMovement()
     {
         // Horizontal Movement
 
