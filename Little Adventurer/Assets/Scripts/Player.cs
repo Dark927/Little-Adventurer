@@ -8,7 +8,7 @@ public class Player : Character
 
     #region Fields
 
-    private PlayerInput _playerInput;
+    protected PlayerInput _playerInput;
     protected float _verticalVelocity;
     protected Quaternion _cameraRotationEuler = Quaternion.Euler(0, -45, 0);
 
@@ -63,6 +63,16 @@ public class Player : Character
         // Set Fall State
 
         _animator.SetBool("Falling", !_characterController.isGrounded);
+    }
+
+    public override void SetState(StateType newStateType)
+    {        
+        base.SetState(newStateType);
+
+        if (newStateType == StateType.State_normal)
+        {
+            _playerInput.enabled = true;
+        }
     }
 
     #endregion

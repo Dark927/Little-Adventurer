@@ -43,7 +43,10 @@ public abstract class Character : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+    }
 
+    private void Start()
+    {
         SetState(StateType.State_normal);
     }
 
@@ -61,7 +64,7 @@ public abstract class Character : MonoBehaviour
 
     #region Public Methods
 
-    public void SetState(StateType newStateType)
+    public virtual void SetState(StateType newStateType)
     {
         if (_currentState != null)
         {
@@ -88,6 +91,17 @@ public abstract class Character : MonoBehaviour
         }
 
          _currentState.Execute();
+    }
+
+
+    public void AttackAnimationEnd()
+    {
+        SetState(StateType.State_normal);
+    }
+
+    public void SetSlideVelocity(Vector3 slideVelocity)
+    {
+        _movementVelocity = slideVelocity;
     }
 
     #endregion
