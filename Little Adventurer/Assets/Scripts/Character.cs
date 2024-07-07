@@ -16,6 +16,7 @@ public class Character : MonoBehaviour
 
     private CharacterController _characterController;
     private PlayerInput _playerInput;
+    private Animator _animator;
 
     private Vector3 _movementVelocity;
     private float _verticalVelocity;
@@ -34,23 +35,25 @@ public class Character : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _playerInput = GetComponent<PlayerInput>();
+        _animator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
     {
-        CalculateMovement();
+        ConfigureMovement();
 
 
         _characterController.Move(_movementVelocity);
     }
 
-    private void CalculateMovement()
+    private void ConfigureMovement()
     {
         // Horizontal Movement
 
         _movementVelocity.Set(_playerInput.HorizontalInput, 0, _playerInput.VerticalInput);
         _movementVelocity.Normalize();
         _movementVelocity = _cameraRotationEuler * _movementVelocity;
+        _animator.SetFloat("Speed", _movementVelocity.magnitude);
         _movementVelocity *= _movementSpeed * Time.deltaTime;
 
         // Vertical Movement
@@ -67,6 +70,10 @@ public class Character : MonoBehaviour
         {
             transform.rotation = Quaternion.LookRotation(lookRotation);
         }
+
+        // Set Fall State
+
+        _animator.SetBool("Falling", !_characterController.isGrounded);
     }
 
     #endregion
