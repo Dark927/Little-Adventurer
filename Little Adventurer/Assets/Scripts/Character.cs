@@ -22,10 +22,11 @@ public abstract class Character : MonoBehaviour
 
     protected CharacterController _characterController;
     protected Animator _animator;
+    protected Health _health;
+    protected DamageCaster _damageCaster;
 
     protected IState _currentState;
     protected StateType _currentStateType;
-
 
     #endregion
 
@@ -43,6 +44,8 @@ public abstract class Character : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+        _health = GetComponent<Health>();
+        _damageCaster = GetComponentInChildren<DamageCaster>();
     }
 
     private void Start()
@@ -90,7 +93,7 @@ public abstract class Character : MonoBehaviour
                 }
         }
 
-         _currentState.Execute();
+        _currentState.Execute();
     }
 
 
@@ -102,6 +105,24 @@ public abstract class Character : MonoBehaviour
     public void SetSlideVelocity(Vector3 slideVelocity)
     {
         _movementVelocity = slideVelocity;
+    }
+
+    public void TakeDamage(int damage, Vector3 attackerPosition = new Vector3())
+    {
+        if (_health != null)
+        {
+            _health.TakeDamage(damage);
+        }
+    }
+
+    public void EnableDamageCaster()
+    {
+        _damageCaster.EnableDamageCaster();
+    }
+
+    public void DisableDamageCaster()
+    {
+        _damageCaster.DisableDamageCaster();
     }
 
     #endregion

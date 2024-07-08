@@ -10,6 +10,7 @@ public class EnemyVFXManager : MonoBehaviour
     #region Fields
 
     [SerializeField] private VisualEffect _burstFootStep;
+    [SerializeField] private VisualEffect _attackSmashVFX;
 
     #endregion
 
@@ -19,6 +20,11 @@ public class EnemyVFXManager : MonoBehaviour
     // ----------------------------------------------------------------------------------
 
     #region Public Methods
+
+    public void PlayAttackVFX()
+    {
+        _attackSmashVFX.Play();
+    }
 
     public void BurstFootStep()
     {

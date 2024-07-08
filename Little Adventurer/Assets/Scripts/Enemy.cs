@@ -49,6 +49,10 @@ public class Enemy : Character
         {
             _navMeshAgent.SetDestination(transform.position);
             _animator.SetFloat("Speed", 0f);
+
+            Quaternion newRotation = Quaternion.LookRotation(_targetPlayer.position - transform.position);
+            transform.rotation = newRotation;
+            SetState(StateType.State_attack);
         }
     }
 
