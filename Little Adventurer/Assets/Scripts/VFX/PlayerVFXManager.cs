@@ -10,6 +10,7 @@ public class PlayerVFXManager : MonoBehaviour
     #region Fields
 
     [SerializeField] private VisualEffect _footStep;
+    [SerializeField] private VisualEffect _heal;
     [SerializeField] private VisualEffect _attackSlash;
     [SerializeField] private ParticleSystem _blade01;
 
@@ -43,6 +44,11 @@ public class PlayerVFXManager : MonoBehaviour
     {
         _attackSlash.transform.position = position;
         _attackSlash.Play();
+    }
+
+    public void PlayHeal()
+    {
+        _heal.Play();
     }
 
     #endregion

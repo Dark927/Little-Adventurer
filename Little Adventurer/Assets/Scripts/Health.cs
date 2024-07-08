@@ -39,6 +39,16 @@ public class Health : MonoBehaviour
 
     #region Public Methods
 
+    public void TakeHeal(int heal)
+    {
+        _currentHp += heal;
+
+        if(_currentHp > _maxHp)
+        {
+            _currentHp = _maxHp;
+        }
+    }
+
     public void TakeDamage(int damage, Vector3 attackerPosition = new Vector3(), float attackForce = 1f)
     {
         _currentHp -= damage;

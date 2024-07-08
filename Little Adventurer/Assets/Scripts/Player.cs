@@ -12,6 +12,8 @@ public class Player : Character
     protected float _verticalVelocity;
     protected Quaternion _cameraRotationEuler = Quaternion.Euler(0, -45, 0);
 
+    protected int _cointsAmount = 0;
+
     #endregion
 
 
@@ -35,6 +37,15 @@ public class Player : Character
         _characterController.Move(_movementVelocity);
         _movementVelocity = Vector3.zero;
     }
+
+    #endregion
+
+
+    // ----------------------------------------------------------------------------------
+    // Public Methods
+    // ----------------------------------------------------------------------------------
+
+    #region Public Methods
 
     public override void ConfigureMovement()
     {
@@ -82,6 +93,11 @@ public class Player : Character
         {
             base.TakeDamage(damage, attackerPosition, attackForce);
         }
+    }
+
+    public void TakeCoins(int coins)
+    {
+        _cointsAmount += coins;
     }
 
     #endregion
