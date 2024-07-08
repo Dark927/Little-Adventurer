@@ -15,6 +15,7 @@ public class AttackState : MonoBehaviour, IState
 
     private Character _character;
     private Animator _animator;
+    private DamageCaster _damageCaster;
 
     #endregion
 
@@ -29,6 +30,7 @@ public class AttackState : MonoBehaviour, IState
     {
         _character = GetComponent<Character>();
         _animator = GetComponent<Animator>();
+        _damageCaster = GetComponentInChildren<DamageCaster>();
     }
 
     private void FixedUpdate()
@@ -57,6 +59,11 @@ public class AttackState : MonoBehaviour, IState
 
     public virtual void Exit()
     {
+        if (_damageCaster != null)
+        {
+            _damageCaster.DisableDamageCaster();
+        }
+
         enabled = false;
     }
 

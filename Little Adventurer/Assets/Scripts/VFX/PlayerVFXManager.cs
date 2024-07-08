@@ -10,6 +10,7 @@ public class PlayerVFXManager : MonoBehaviour
     #region Fields
 
     [SerializeField] private VisualEffect _footStep;
+    [SerializeField] private VisualEffect _attackSlash;
     [SerializeField] private ParticleSystem _blade01;
 
     #endregion
@@ -36,6 +37,12 @@ public class PlayerVFXManager : MonoBehaviour
     public void PlayBlade01()
     {
         _blade01.Play();
+    }
+
+    public void PlayAttackSlash(Vector3 position)
+    {
+        _attackSlash.transform.position = position;
+        _attackSlash.Play();
     }
 
     #endregion

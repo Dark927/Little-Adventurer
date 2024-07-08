@@ -11,6 +11,7 @@ public class DamageCaster : MonoBehaviour
 
     [SerializeField] private int _damage;
 
+    private PlayerVFXManager _playerVFX;
     private Collider _damageCasterCollider;
     private List<Collider> _damagedTargetsList;
 
@@ -26,6 +27,7 @@ public class DamageCaster : MonoBehaviour
     private void Awake()
     {
         _damageCasterCollider = GetComponent<Collider>();
+        _playerVFX = GetComponentInParent<PlayerVFXManager>();
         _damageCasterCollider.enabled = false;
         _damagedTargetsList = new();
     }
@@ -38,9 +40,62 @@ public class DamageCaster : MonoBehaviour
 
             if (enemy != null)
             {
-                enemy.TakeDamage(_damage);
+                enemy.TakeDamage(_damage, transform.parent.position);
+
+                PlaySlashVFX();
+
                 _damagedTargetsList.Add(other);
             }
+        }
+    }
+
+    private void PlaySlashVFX()
+    {
+        RaycastHit hit;
+
+        Vector3 originalPosition = transform.position + (-_damageCasterCollider.bounds.extents.z) * transform.forward;
+
+        bool isHit = Physics.BoxCast(
+            originalPosition,
+            _damageCasterCollider.bounds.extents / 2,
+            transform.forward,
+            out hit,
+            transform.rotation,
+            _damageCasterCollider.bounds.extents.z,
+            1 << 6
+            );
+
+        if (isHit)
+        {
+            _playerVFX.PlayAttackSlash(hit.point + new Vector3(0, 0.5f, 0));
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_damageCasterCollider == null)
+        {
+            _damageCasterCollider = GetComponent<Collider>();
+        }
+
+        RaycastHit hit;
+
+        Vector3 originalPosition = transform.position + (-_damageCasterCollider.bounds.extents.z) * transform.forward;
+
+        bool isHit = Physics.BoxCast(
+            originalPosition,
+            _damageCasterCollider.bounds.extents / 2,
+            transform.forward,
+            out hit,
+            transform.rotation,
+            _damageCasterCollider.bounds.extents.z,
+            1 << 6
+            );
+
+        if(isHit)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(hit.point, 0.3f);
         }
     }
 

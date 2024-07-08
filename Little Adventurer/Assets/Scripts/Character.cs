@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public enum StateType
@@ -28,6 +29,9 @@ public abstract class Character : MonoBehaviour
     protected IState _currentState;
     protected StateType _currentStateType;
 
+    protected MaterialPropertyBlock _materialPropertyBlock;
+    protected SkinnedMeshRenderer _skinnedMeshRenderer;
+
     #endregion
 
 
@@ -46,6 +50,10 @@ public abstract class Character : MonoBehaviour
         _animator = GetComponent<Animator>();
         _health = GetComponent<Health>();
         _damageCaster = GetComponentInChildren<DamageCaster>();
+
+        _skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        _materialPropertyBlock = new MaterialPropertyBlock();
+        _skinnedMeshRenderer.GetPropertyBlock(_materialPropertyBlock);
     }
 
     private void Start()
@@ -56,6 +64,17 @@ public abstract class Character : MonoBehaviour
     protected virtual void FixedUpdate()
     {
 
+    }
+
+    protected IEnumerator MaterialBlink()
+    {
+        _materialPropertyBlock.SetFloat("_blink", 0.4f);
+        _skinnedMeshRenderer.SetPropertyBlock(_materialPropertyBlock);
+
+        yield return new WaitForSeconds(0.2f);
+
+        _materialPropertyBlock.SetFloat("_blink", 0f);
+        _skinnedMeshRenderer.SetPropertyBlock(_materialPropertyBlock);
     }
 
     #endregion
@@ -107,11 +126,12 @@ public abstract class Character : MonoBehaviour
         _movementVelocity = slideVelocity;
     }
 
-    public void TakeDamage(int damage, Vector3 attackerPosition = new Vector3())
+    public virtual void TakeDamage(int damage, Vector3 attackerPosition = new Vector3())
     {
         if (_health != null)
         {
             _health.TakeDamage(damage);
+            StartCoroutine(MaterialBlink());
         }
     }
 

@@ -8,8 +8,9 @@ public class Enemy : Character
 
     #region Fields
 
-    UnityEngine.AI.NavMeshAgent _navMeshAgent;
+    private UnityEngine.AI.NavMeshAgent _navMeshAgent;
     private Transform _targetPlayer;
+    private EnemyVFXManager _enemyVFX;
 
 
     #endregion
@@ -27,6 +28,7 @@ public class Enemy : Character
         base.Awake();
 
         _navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        _enemyVFX = GetComponent<EnemyVFXManager>();
         _targetPlayer = FindObjectOfType<Player>().transform;
     }
 
@@ -54,6 +56,13 @@ public class Enemy : Character
             transform.rotation = newRotation;
             SetState(StateType.State_attack);
         }
+    }
+
+    public override void TakeDamage(int damage, Vector3 attackerPosition = new Vector3())
+    {
+        base.TakeDamage(damage);
+
+        _enemyVFX.BeingHitVFX(attackerPosition);
     }
 
     #endregion
