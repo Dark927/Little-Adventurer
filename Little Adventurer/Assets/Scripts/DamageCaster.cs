@@ -10,6 +10,8 @@ public class DamageCaster : MonoBehaviour
     #region Fields
 
     [SerializeField] private int _damage;
+    [SerializeField] private float _force;
+    [SerializeField] private string _targetTag;
 
     private PlayerVFXManager _playerVFX;
     private Collider _damageCasterCollider;
@@ -36,15 +38,17 @@ public class DamageCaster : MonoBehaviour
     {
         if (!_damagedTargetsList.Contains(other))
         {
-            Enemy enemy = other.GetComponent<Enemy>();
+            Character target = other.GetComponent<Character>();
 
-            if (enemy != null)
+            if ((target != null) && (target.CompareTag(_targetTag)))
             {
-                enemy.TakeDamage(_damage, transform.parent.position);
+                if (!target.IsDead)
+                {
+                    target.TakeDamage(_damage, transform.parent.position, _force);
+                    PlaySlashVFX();
 
-                PlaySlashVFX();
-
-                _damagedTargetsList.Add(other);
+                    _damagedTargetsList.Add(other);
+                }
             }
         }
     }
@@ -92,7 +96,7 @@ public class DamageCaster : MonoBehaviour
             1 << 6
             );
 
-        if(isHit)
+        if (isHit)
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(hit.point, 0.3f);

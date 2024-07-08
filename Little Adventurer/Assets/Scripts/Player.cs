@@ -33,6 +33,7 @@ public class Player : Character
         base.FixedUpdate();
 
         _characterController.Move(_movementVelocity);
+        _movementVelocity = Vector3.zero;
     }
 
     public override void ConfigureMovement()
@@ -72,6 +73,14 @@ public class Player : Character
         if (newStateType == StateType.State_normal)
         {
             _playerInput.enabled = true;
+        }
+    }
+
+    public override void TakeDamage(int damage, Vector3 attackerPosition = new Vector3(), float attackForce = 1f)
+    {
+        if (!_isDead && !_isInvincible)
+        {
+            base.TakeDamage(damage, attackerPosition, attackForce);
         }
     }
 

@@ -1,14 +1,18 @@
 using System.Collections;
 using UnityEngine;
 
-public enum StateType
+public enum CharacterType
 {
-    State_normal = 0,
-    State_attack = 1,
+    Character_player = 0,
+    Character_enemy = 1,
 }
 
+[RequireComponent(
+    typeof(NormalState),
+    typeof(AttackState),
+    typeof(DeadState))
+    ]
 
-[RequireComponent(typeof(NormalState), typeof(AttackState))]
 public abstract class Character : MonoBehaviour
 {
     // ----------------------------------------------------------------------------------
@@ -17,9 +21,14 @@ public abstract class Character : MonoBehaviour
 
     #region Fields
 
+    [Space]
+    [Header("Movement")]
+    [Space]
+
     public float Gravity = -9.8f;
     [SerializeField] protected float _movementSpeed;
     protected Vector3 _movementVelocity;
+    [HideInInspector] public Vector3 ActualImpactOn;
 
     protected CharacterController _characterController;
     protected Animator _animator;
@@ -31,6 +40,18 @@ public abstract class Character : MonoBehaviour
 
     protected MaterialPropertyBlock _materialPropertyBlock;
     protected SkinnedMeshRenderer _skinnedMeshRenderer;
+
+    protected bool _isDead = false;
+
+    [Space]
+    [Header("Main Settings")]
+    [Space]
+
+    [SerializeField] protected CharacterType _characterType;
+    [SerializeField] protected GameObject _dropItem;
+
+    [SerializeField] protected float _invincibleDuration = 2f;
+    protected bool _isInvincible = false;
 
     #endregion
 
@@ -77,6 +98,13 @@ public abstract class Character : MonoBehaviour
         _skinnedMeshRenderer.SetPropertyBlock(_materialPropertyBlock);
     }
 
+    protected IEnumerator InvincibleRoutine()
+    {
+        _isInvincible = true;
+        yield return new WaitForSeconds(_invincibleDuration);
+        _isInvincible = false;
+    }
+
     #endregion
 
 
@@ -85,6 +113,17 @@ public abstract class Character : MonoBehaviour
     // ----------------------------------------------------------------------------------
 
     #region Public Methods
+
+    public bool IsDead
+    {
+        get { return _isDead; }
+    }
+
+    public CharacterType GetCharacterType()
+    {
+        return _characterType;
+    }
+
 
     public virtual void SetState(StateType newStateType)
     {
@@ -110,13 +149,25 @@ public abstract class Character : MonoBehaviour
                     _currentState = GetComponent<AttackState>();
                     break;
                 }
+
+            case StateType.State_hurted:
+                {
+                    _currentState = GetComponent<HurtedState>();
+                    break;
+                }
+
+            case StateType.State_dead:
+                {
+                    _currentState = GetComponent<DeadState>();
+                    _isDead = true;
+                    break;
+                }
         }
 
         _currentState.Execute();
     }
 
-
-    public void AttackAnimationEnd()
+    public void ResetNormalState()
     {
         SetState(StateType.State_normal);
     }
@@ -126,12 +177,13 @@ public abstract class Character : MonoBehaviour
         _movementVelocity = slideVelocity;
     }
 
-    public virtual void TakeDamage(int damage, Vector3 attackerPosition = new Vector3())
+    public virtual void TakeDamage(int damage, Vector3 attackerPosition = new Vector3(), float force = 1f)
     {
         if (_health != null)
         {
-            _health.TakeDamage(damage);
+            _health.TakeDamage(damage, attackerPosition, force);
             StartCoroutine(MaterialBlink());
+            StartCoroutine(InvincibleRoutine());
         }
     }
 
@@ -143,6 +195,27 @@ public abstract class Character : MonoBehaviour
     public void DisableDamageCaster()
     {
         _damageCaster.DisableDamageCaster();
+    }
+
+    public virtual void DropItem()
+    {
+        if (_dropItem != null)
+        {
+            Instantiate(_dropItem, transform.position, Quaternion.identity);
+        }
+    }
+
+    public void AddImpact(Vector3 attackerPosition, float force)
+    {
+        Vector3 impactDirection = (transform.position - attackerPosition).normalized;
+        impactDirection.y = 0;
+
+        ActualImpactOn = impactDirection * force;
+    }
+
+    public void SetMovementVelocity(Vector3 velocity)
+    {
+        _movementVelocity = velocity;
     }
 
     #endregion

@@ -1852,10 +1852,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2486484947846328934, guid: ff84171cd2a1dea4393a899ceb07b89f, type: 3}
-      propertyPath: _beingHitSplashVFX
-      value: 
-      objectReference: {fileID: 5091917010390914819, guid: d1fe802ee7b6fc24497016910b9375d6, type: 3}
     - target: {fileID: 5458276002204155781, guid: ff84171cd2a1dea4393a899ceb07b89f, type: 3}
       propertyPath: m_Name
       value: Enemy_01

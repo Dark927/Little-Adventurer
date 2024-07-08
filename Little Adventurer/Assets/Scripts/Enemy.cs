@@ -12,7 +12,6 @@ public class Enemy : Character
     private Transform _targetPlayer;
     private EnemyVFXManager _enemyVFX;
 
-
     #endregion
 
 
@@ -37,11 +36,20 @@ public class Enemy : Character
         base.FixedUpdate();
     }
 
+    #endregion
+
+
+    // ----------------------------------------------------------------------------------
+    // Public Methods
+    // ----------------------------------------------------------------------------------
+
+    #region Public Methods
+
     public override void ConfigureMovement()
     {
         bool farFromPlayer = Vector3.Distance(_targetPlayer.position, transform.position) >= _navMeshAgent.stoppingDistance;
 
-        if(farFromPlayer)
+        if (farFromPlayer)
         {
             _navMeshAgent.SetDestination(_targetPlayer.position);
             _navMeshAgent.speed = _movementSpeed;
@@ -58,11 +66,13 @@ public class Enemy : Character
         }
     }
 
-    public override void TakeDamage(int damage, Vector3 attackerPosition = new Vector3())
+    public override void TakeDamage(int damage, Vector3 attackerPosition = new Vector3(), float attackForce = 1f)
     {
-        base.TakeDamage(damage);
-
-        _enemyVFX.BeingHitVFX(attackerPosition);
+        if (!_isDead && !_isInvincible)
+        {
+            base.TakeDamage(damage);
+            _enemyVFX.BeingHitVFX(attackerPosition);
+        }
     }
 
     #endregion

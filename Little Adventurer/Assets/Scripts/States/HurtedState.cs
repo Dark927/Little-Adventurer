@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NormalState : MonoBehaviour, IState
+public class HurtedState : MonoBehaviour, IState
 {
     // ----------------------------------------------------------------------------------
     // Fields
@@ -8,7 +8,10 @@ public class NormalState : MonoBehaviour, IState
 
     #region Fields
 
-    Character _character;
+    private Character _character;
+    private Animator _animator;
+
+    private float _impactDurationTime = 5f;
 
     #endregion
 
@@ -22,11 +25,17 @@ public class NormalState : MonoBehaviour, IState
     private void Awake()
     {
         _character = GetComponent<Character>();
+        _animator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
     {
-        _character.ConfigureMovement();
+        if (_character.ActualImpactOn.magnitude > 0.2f)
+        {
+            _character.SetMovementVelocity(_character.ActualImpactOn * Time.deltaTime);
+        }
+
+        _character.ActualImpactOn = Vector3.Lerp(_character.ActualImpactOn, Vector3.zero,  _impactDurationTime * Time.deltaTime);
     }
 
     #endregion
@@ -41,6 +50,7 @@ public class NormalState : MonoBehaviour, IState
     public void Execute()
     {
         enabled = true;
+        _animator.SetTrigger("Hurted");
     }
 
     public void Exit()
