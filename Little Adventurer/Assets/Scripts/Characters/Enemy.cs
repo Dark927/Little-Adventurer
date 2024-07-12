@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Enemy : Character
 {
@@ -82,7 +83,17 @@ public class Enemy : Character
 
     public void RotateToTarget()
     {
-        transform.LookAt(_targetPlayer, Vector3.up);
+        if (!_isDead)
+        {
+            transform.LookAt(_targetPlayer, Vector3.up);
+        }
+    }
+
+    public override void DissolveMaterialDeath(float dissolveHeightStart, float dissolveHeightEnd, float dissolveDuration, float startDelay = 0f)
+    {
+        base.DissolveMaterialDeath(dissolveHeightStart, dissolveHeightEnd, dissolveDuration, startDelay);
+
+        DropItem();
     }
 
     #endregion

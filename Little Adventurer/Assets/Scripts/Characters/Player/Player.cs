@@ -14,6 +14,16 @@ public class Player : Character
 
     protected int _cointsAmount = 0;
 
+    [Space]
+    [Header("Falling Settings")]
+    [Space]
+
+    [SerializeField] protected string _groundLayerName = "ground";
+    [SerializeField] protected float _minDistanceToFall = 0.2f;
+    [SerializeField] protected float _maxDistanceToFall = 10f;
+    [SerializeField] protected StateType[] _fallingIgnoreStates = { StateType.State_dash, StateType.State_spawn };
+
+
     #endregion
 
 
@@ -39,10 +49,50 @@ public class Player : Character
 
     private void HandleAirbone()
     {
-        bool isFalling = !_characterController.isGrounded && (_currentStateType != StateType.State_dash);
+        // Check all falling conditions before setting animator value
+
+        bool isFalling = true;
+
+        foreach (StateType stateType in _fallingIgnoreStates)
+        {
+            if (_currentStateType == stateType)
+            {
+                isFalling = false;
+                break;
+            }
+        }
+
+        if (isFalling)
+        {
+            RaycastHit hit;
+            Vector3 rayStartPosition = transform.position + Vector3.up * 0.1f;
+
+            if (Physics.Raycast(rayStartPosition, Vector3.down, out hit, _maxDistanceToFall, LayerMask.NameToLayer(_groundLayerName)))
+            {
+                isFalling = hit.distance > _minDistanceToFall;
+            }
+        }
 
         _animator.SetBool("Falling", isFalling);
         _playerInput.enabled = !isFalling;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+
+        RaycastHit hit;
+        Vector3 rayStartPosition = transform.position + Vector3.up * 0.1f;
+
+        if (Physics.Raycast(rayStartPosition, Vector3.down, out hit, _maxDistanceToFall, LayerMask.NameToLayer(_groundLayerName)))
+        {
+            if (hit.distance > _minDistanceToFall)
+            {
+                Gizmos.color = Color.green;
+            }
+
+            Gizmos.DrawLine(rayStartPosition, hit.point);
+        }
     }
 
     #endregion
@@ -81,7 +131,7 @@ public class Player : Character
     }
 
     public override void SetState(StateType newStateType)
-    {        
+    {
         base.SetState(newStateType);
     }
 

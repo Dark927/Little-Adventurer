@@ -88,7 +88,7 @@ public abstract class Character : MonoBehaviour
 
     private void Start()
     {
-        SetState(StateType.State_normal);
+        SetState(StateType.State_spawn);
     }
 
     protected virtual void FixedUpdate()
@@ -107,11 +107,45 @@ public abstract class Character : MonoBehaviour
         _skinnedMeshRenderer.SetPropertyBlock(_materialPropertyBlock);
     }
 
-    protected IEnumerator InvincibleRoutine()
+    protected IEnumerator InvincibleRoutine(float duration)
     {
         _isInvincible = true;
-        yield return new WaitForSeconds(_invincibleDuration);
+        yield return new WaitForSeconds(duration);
         _isInvincible = false;
+    }
+
+    protected IEnumerator DissolveMaterialRoutine(float dissolveHeightStart, float dissolveHeightEnd, float dissolveDuration, float startDelay = 0f)
+    {
+        // Dissolve Material parameters
+
+        _materialPropertyBlock.SetFloat("_enableDissolve", 1f);
+        _materialPropertyBlock.SetFloat("_dissolve_height", dissolveHeightStart);
+        _skinnedMeshRenderer.SetPropertyBlock(_materialPropertyBlock);
+
+        yield return new WaitForSeconds(startDelay);
+
+
+        float dissolveHeight;
+        float dissolvePassedTime = 0f;
+
+        // Linearly change dissolve height value
+
+        while (dissolvePassedTime < dissolveDuration)
+        {
+            dissolvePassedTime += Time.deltaTime;
+            dissolveHeight = Mathf.Lerp(dissolveHeightStart, dissolveHeightEnd, dissolvePassedTime / dissolveDuration);
+
+            _materialPropertyBlock.SetFloat("_dissolve_height", dissolveHeight);
+            _skinnedMeshRenderer.SetPropertyBlock(_materialPropertyBlock);
+
+            yield return null;
+        }
+
+
+        // Set target value 
+
+        _materialPropertyBlock.SetFloat("_dissolve_height", dissolveHeightEnd);
+        _skinnedMeshRenderer.SetPropertyBlock(_materialPropertyBlock);
     }
 
     #endregion
@@ -133,6 +167,37 @@ public abstract class Character : MonoBehaviour
         return _characterType;
     }
 
+    public StateType GetCurrentStateType()
+    {
+        return _currentState.CurrentStateType;
+    }
+
+    public void ResetNormalState()
+    {
+        SetState(StateType.State_normal);
+    }
+
+    public void SetSlideVelocity(Vector3 slideVelocity)
+    {
+        _movementVelocity = slideVelocity;
+    }
+
+    public void EnableDamageCaster()
+    {
+        _damageCaster.EnableDamageCaster();
+    }
+
+    public void DisableDamageCaster()
+    {
+        _damageCaster.DisableDamageCaster();
+    }
+
+    public void SetMovementVelocity(Vector3 velocity)
+    {
+        _movementVelocity = velocity;
+    }
+
+
     public virtual void SetState(StateType newStateType)
     {
         if (_currentState != null)
@@ -145,7 +210,7 @@ public abstract class Character : MonoBehaviour
 
         switch (_currentStateType)
         {
-            default:
+            default:            
             case StateType.State_normal:
                 {
                     _currentState = GetComponent<NormalState>();
@@ -170,6 +235,12 @@ public abstract class Character : MonoBehaviour
                     break;
                 }
 
+            case StateType.State_spawn:
+                {
+                    _currentState = GetComponent<SpawnState>();
+                    break;
+                }
+
             case StateType.State_dead:
                 {
                     _currentState = GetComponent<DeadState>();
@@ -181,39 +252,19 @@ public abstract class Character : MonoBehaviour
         _currentState.Execute();
     }
 
-    public StateType GetCurrentStateType()
-    {
-        return _currentState.CurrentStateType;
-    }
-
-    public void ResetNormalState()
-    {
-        SetState(StateType.State_normal);
-    }
-
-    public void SetSlideVelocity(Vector3 slideVelocity)
-    {
-        _movementVelocity = slideVelocity;
-    }
-
     public virtual void TakeDamage(int damage, Vector3 attackerPosition = new Vector3(), float force = 1f)
     {
         if (_health != null)
         {
             _health.TakeDamage(damage, attackerPosition, force);
             StartCoroutine(MaterialBlink());
-            StartCoroutine(InvincibleRoutine());
+            BecomeInvincible(_invincibleDuration);
         }
     }
 
-    public void EnableDamageCaster()
+    public virtual void BecomeInvincible(float duration)
     {
-        _damageCaster.EnableDamageCaster();
-    }
-
-    public void DisableDamageCaster()
-    {
-        _damageCaster.DisableDamageCaster();
+        StartCoroutine(InvincibleRoutine(duration));
     }
 
     public virtual void DropItem()
@@ -232,9 +283,18 @@ public abstract class Character : MonoBehaviour
         ActualImpactOn = impactDirection * force;
     }
 
-    public void SetMovementVelocity(Vector3 velocity)
+    public virtual void DissolveMaterialDeath(float dissolveHeightStart, float dissolveHeightEnd, float dissolveDuration, float startDelay = 0f)
     {
-        _movementVelocity = velocity;
+        StartCoroutine(DissolveMaterialRoutine(dissolveHeightStart, dissolveHeightEnd, dissolveDuration, startDelay));
+
+        // Off collider 
+
+        GetComponent<Collider>().enabled = false;
+    }
+
+    public virtual void DissolveMaterial(float dissolveHeightStart, float dissolveHeightEnd, float dissolveDuration, float startDelay = 0f)
+    {
+        StartCoroutine(DissolveMaterialRoutine(dissolveHeightStart, dissolveHeightEnd, dissolveDuration, startDelay));
     }
 
     #endregion

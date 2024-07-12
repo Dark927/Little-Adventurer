@@ -6,6 +6,7 @@ public enum StateType
     State_dead,
     State_hurted,
     State_dash,
+    State_spawn,
 }
 
 public interface IState

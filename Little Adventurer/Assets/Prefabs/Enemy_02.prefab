@@ -79,6 +79,7 @@ GameObject:
   - component: {fileID: 3466300336513306096}
   - component: {fileID: 872052188729415461}
   - component: {fileID: 1340666589282513974}
+  - component: {fileID: 9063787643704311676}
   - component: {fileID: 6626982940303160227}
   - component: {fileID: 7093991161135807702}
   - component: {fileID: 373031973735943538}
@@ -204,6 +205,19 @@ MonoBehaviour:
   _attackSmashVFX: {fileID: 0}
   _beingHitVFX: {fileID: 8665943098496228739}
   _beingHitSplashVFX: {fileID: 5091917010390914819, guid: d1fe802ee7b6fc24497016910b9375d6, type: 3}
+--- !u!114 &9063787643704311676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8909655878462716373}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d596754b36f7254caca9718829652d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnDuration: 2
 --- !u!114 &6626982940303160227
 MonoBehaviour:
   m_ObjectHideFlags: 0

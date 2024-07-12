@@ -71,9 +71,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4140908888495929001}
   - component: {fileID: 4140908888495929002}
-  - component: {fileID: 4140908888495929000}
   - component: {fileID: 4140908888495929005}
+  - component: {fileID: 4140908888495929000}
   - component: {fileID: 4140908888495929004}
+  - component: {fileID: 5300702425051084131}
   - component: {fileID: 538702758}
   - component: {fileID: 538702759}
   - component: {fileID: 9137307982605156303}
@@ -125,24 +126,6 @@ CharacterController:
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &4140908888495929000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4140908888495928982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bb4e9111b76e3d48ad94429047252aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attackKeyCode: 323
-  _dashKeyCode: 32
-  _attackTimeDelay: 1
-  _dashTimeDelay: 2
-  IsAttackButtonDown: 0
-  IsDashButtonDown: 0
 --- !u!95 &4140908888495929005
 Animator:
   serializedVersion: 5
@@ -164,6 +147,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4140908888495929000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4140908888495928982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb4e9111b76e3d48ad94429047252aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackKeyCode: 323
+  _dashKeyCode: 32
+  _attackTimeDelay: 1
+  _dashTimeDelay: 2
+  IsAttackButtonDown: 0
+  IsDashButtonDown: 0
 --- !u!114 &4140908888495929004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +183,23 @@ MonoBehaviour:
   _blade01: {fileID: 809736983923122960}
   _blade02: {fileID: 8353903641178090291}
   _blade03: {fileID: 7774281031890512848}
+--- !u!114 &5300702425051084131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4140908888495928982}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d596754b36f7254caca9718829652d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnDuration: 1
+  dissolveMaterialStart: -10
+  dissolveMaterialEnd: 20
+  dissolveDuration: 2
+  startDelay: 0
 --- !u!114 &538702758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,6 +218,10 @@ MonoBehaviour:
   _characterType: 0
   _dropItem: {fileID: 0}
   _invincibleDuration: 2
+  _groundLayerName: ground
+  _minDistanceToFall: 0.3
+  _maxDistanceToFall: 10
+  _fallingIgnoreStates: 0400000005000000
 --- !u!114 &538702759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,6 +260,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebef714c748c570489edcb7582e87cb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dissolveMaterialStart: 20
+  dissolveMaterialEnd: -10
+  dissolveDuration: 2
+  startDelay: 2
 --- !u!114 &75068878787925957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,7 +271,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4140908888495928982}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91b32d05dc50f8e499561a71784569e8, type: 3}
   m_Name: 
