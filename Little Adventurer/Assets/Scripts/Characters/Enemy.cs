@@ -80,6 +80,11 @@ public class Enemy : Character
         }
     }
 
+    public void RotateToTarget()
+    {
+        transform.LookAt(_targetPlayer, Vector3.up);
+    }
+
     #endregion
 }
 
