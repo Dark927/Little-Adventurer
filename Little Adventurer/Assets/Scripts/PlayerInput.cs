@@ -9,11 +9,12 @@ public class PlayerInput : MonoBehaviour
     #region Fields
 
     private Character _character;
+    private CharacterController _characterController;
 
     private float _horizontalInput;
     private float _verticalInput;
 
-    private bool isMouseButtonDown = false;
+    public bool IsMouseButtonDown = false;
 
     #endregion
 
@@ -27,30 +28,46 @@ public class PlayerInput : MonoBehaviour
     private void Awake()
     {
         _character = GetComponent<Character>();
+        _characterController = GetComponent<CharacterController>();
     }
 
     private void Update()
     {
-        if (!isMouseButtonDown && (Time.timeScale != 0))
-        {
-            isMouseButtonDown = Input.GetMouseButtonDown(0);
-        }
+        HandleAttackInput();
+        HandleMovementInput();
+    }
 
-        if (isMouseButtonDown)
-        {
-            _character.SetState(StateType.State_attack);
-            enabled = false;
-            return;
-        }
-
+    private void HandleMovementInput()
+    {
         _horizontalInput = Input.GetAxisRaw("Horizontal");
         _verticalInput = Input.GetAxisRaw("Vertical");
     }
 
+    private void HandleAttackInput()
+    {
+        if (!IsMouseButtonDown && (Time.timeScale != 0))
+        {
+            IsMouseButtonDown = Input.GetMouseButtonDown(0);
+        }
+
+
+        // Check current player state and set attack state if it is possible 
+
+        if (IsMouseButtonDown && _characterController.isGrounded)
+        {
+            StateType currentState = _character.GetCurrentStateType();
+
+            if (!(currentState == StateType.State_attack))
+            {
+                _character.SetState(StateType.State_attack);
+            }
+            IsMouseButtonDown = false;
+        }
+    }
 
     private void OnDisable()
     {
-        isMouseButtonDown = false;
+        IsMouseButtonDown = false;
         _horizontalInput = 0f;
         _verticalInput = 0f;
     }

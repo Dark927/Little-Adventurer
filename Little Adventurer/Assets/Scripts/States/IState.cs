@@ -9,6 +9,7 @@ public enum StateType
 
 public interface IState
 {
+    public StateType CurrentStateType { get; }
     public void Execute();
     public void Exit();
 }

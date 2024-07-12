@@ -17,6 +17,10 @@ public class AttackState : MonoBehaviour, IState
     private Animator _animator;
     private DamageCaster _damageCaster;
 
+    private float _attackAnimationDuration;
+    private StateType _stateType = StateType.State_attack;
+
+
     #endregion
 
 
@@ -33,12 +37,46 @@ public class AttackState : MonoBehaviour, IState
         _damageCaster = GetComponentInChildren<DamageCaster>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        float timePassed = Time.time - _attackStartTime;
-        Vector3 slideVelocity = Vector3.Lerp(transform.forward * _attackSlideSpeed, Vector3.zero, timePassed / _attackSlideDuration);
+        ConfigurePlayerAttack();
+    }
 
-        _character.SetSlideVelocity(slideVelocity);
+    private void ConfigurePlayerAttack()
+    {
+        Player player = GetComponent<Player>();
+
+        if (player != null)
+        {
+            // Attack slide 
+
+            float timePassed = Time.time - _attackStartTime;
+            Vector3 slideVelocity = Vector3.Lerp(transform.forward * _attackSlideSpeed, Vector3.zero, timePassed / _attackSlideDuration);
+
+            _character.SetSlideVelocity(slideVelocity);
+
+            AttackCombo();
+        }
+    }
+
+    private void AttackCombo()
+    {
+        CharacterController _characterController = GetComponent<CharacterController>();
+        PlayerInput _playerInput = GetComponent<PlayerInput>();
+
+        if (Input.GetMouseButtonDown(0) && _characterController.isGrounded)
+        {
+            string currentClipName = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+            _attackAnimationDuration = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
+            string lastAttackName = "LittleAdventurerAndie_ATTACK_03";
+
+            if ((currentClipName != lastAttackName) && (_attackAnimationDuration > 0.5f) && (_attackAnimationDuration <= 0.7f))
+            {
+                _character.SetState(StateType.State_attack);
+                _character.ConfigureMovement();
+            }
+        }
     }
 
     #endregion
@@ -49,6 +87,11 @@ public class AttackState : MonoBehaviour, IState
     // ----------------------------------------------------------------------------------
 
     #region Public Methods
+
+    public StateType CurrentStateType
+    {
+        get { return _stateType; }
+    }
 
     public virtual void Execute()
     {
@@ -62,6 +105,11 @@ public class AttackState : MonoBehaviour, IState
         if (_damageCaster != null)
         {
             _damageCaster.DisableDamageCaster();
+        }
+
+        if(_character.GetCharacterType() == CharacterType.Character_player)
+        {
+            GetComponent<PlayerVFXManager>().StopBlades();
         }
 
         enabled = false;

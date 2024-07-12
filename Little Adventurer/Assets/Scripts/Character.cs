@@ -57,13 +57,22 @@ public abstract class Character : MonoBehaviour
 
 
     // ----------------------------------------------------------------------------------
+    // Abstract Methods
+    // ----------------------------------------------------------------------------------
+
+    #region Abstract Methods
+
+    public abstract void ConfigureMovement();
+    public abstract void Move();
+
+    #endregion
+
+
+    // ----------------------------------------------------------------------------------
     // Protected Methods
     // ----------------------------------------------------------------------------------
 
     #region Protected Methods
-
-    public abstract void ConfigureMovement();
-
 
     protected virtual void Awake()
     {
@@ -165,6 +174,11 @@ public abstract class Character : MonoBehaviour
         }
 
         _currentState.Execute();
+    }
+
+    public StateType GetCurrentStateType()
+    {
+        return _currentState.CurrentStateType;
     }
 
     public void ResetNormalState()

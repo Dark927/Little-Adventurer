@@ -8,7 +8,9 @@ public class NormalState : MonoBehaviour, IState
 
     #region Fields
 
-    Character _character;
+    private Character _character;
+    private StateType _stateType = StateType.State_normal;
+
 
     #endregion
 
@@ -27,6 +29,7 @@ public class NormalState : MonoBehaviour, IState
     private void FixedUpdate()
     {
         _character.ConfigureMovement();
+        _character.Move();
     }
 
     #endregion
@@ -37,6 +40,11 @@ public class NormalState : MonoBehaviour, IState
     // ----------------------------------------------------------------------------------
 
     #region Public Methods
+
+    public StateType CurrentStateType 
+    { 
+        get { return _stateType; } 
+    }
 
     public void Execute()
     {

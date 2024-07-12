@@ -34,8 +34,15 @@ public class Player : Character
     {
         base.FixedUpdate();
 
-        _characterController.Move(_movementVelocity);
-        _movementVelocity = Vector3.zero;
+        HandleAirbone();
+    }
+
+    private void HandleAirbone()
+    {
+        bool isFalling = !_characterController.isGrounded;
+
+        _animator.SetBool("Falling", isFalling);
+        _playerInput.enabled = !isFalling;
     }
 
     #endregion
@@ -71,20 +78,11 @@ public class Player : Character
         {
             transform.rotation = Quaternion.LookRotation(lookRotation);
         }
-
-        // Set Fall State
-
-        _animator.SetBool("Falling", !_characterController.isGrounded);
     }
 
     public override void SetState(StateType newStateType)
     {        
         base.SetState(newStateType);
-
-        if (newStateType == StateType.State_normal)
-        {
-            _playerInput.enabled = true;
-        }
     }
 
     public override void TakeDamage(int damage, Vector3 attackerPosition = new Vector3(), float attackForce = 1f)
@@ -98,6 +96,12 @@ public class Player : Character
     public void TakeCoins(int coins)
     {
         _cointsAmount += coins;
+    }
+
+    public override void Move()
+    {
+        _characterController.Move(_movementVelocity);
+        _movementVelocity = Vector3.zero;
     }
 
     #endregion

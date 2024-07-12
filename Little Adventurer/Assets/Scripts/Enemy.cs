@@ -66,6 +66,11 @@ public class Enemy : Character
         }
     }
 
+    public override void Move()
+    {
+        // Enemy movement controlled by CharacterController and NavMesh Agent
+    }
+
     public override void TakeDamage(int damage, Vector3 attackerPosition = new Vector3(), float attackForce = 1f)
     {
         if (!_isDead && !_isInvincible)

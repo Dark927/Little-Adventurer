@@ -14,6 +14,8 @@ public class DeadState : MonoBehaviour, IState
     SkinnedMeshRenderer _skinnedMeshRenderer;
     MaterialPropertyBlock _materialPropertyBlock;
 
+    private StateType _stateType = StateType.State_dead;
+
     #endregion
 
 
@@ -90,6 +92,11 @@ public class DeadState : MonoBehaviour, IState
     // ----------------------------------------------------------------------------------
 
     #region Public Methods
+
+    public StateType CurrentStateType
+    {
+        get { return _stateType; }
+    }
 
     public void Execute()
     {
