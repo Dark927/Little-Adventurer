@@ -39,7 +39,7 @@ public class Player : Character
 
     private void HandleAirbone()
     {
-        bool isFalling = !_characterController.isGrounded;
+        bool isFalling = !_characterController.isGrounded && (_currentStateType != StateType.State_dash);
 
         _animator.SetBool("Falling", isFalling);
         _playerInput.enabled = !isFalling;

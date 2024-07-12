@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 2881117808346883204}
   - component: {fileID: 75068878787925957}
   - component: {fileID: 538702760}
+  - component: {fileID: 2487949191013221254}
   - component: {fileID: 538702762}
   m_Layer: 0
   m_Name: Player
@@ -136,6 +137,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb4e9111b76e3d48ad94429047252aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackKeyCode: 323
+  _dashKeyCode: 32
+  _attackTimeDelay: 1
+  _dashTimeDelay: 2
+  IsAttackButtonDown: 0
+  IsDashButtonDown: 0
 --- !u!95 &4140908888495929005
 Animator:
   serializedVersion: 5
@@ -256,6 +263,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHp: 100
+--- !u!114 &2487949191013221254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4140908888495928982}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5128fbf1fa830804ab8a06c9949c6307, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dashSpeed: 9
 --- !u!114 &538702762
 MonoBehaviour:
   m_ObjectHideFlags: 0

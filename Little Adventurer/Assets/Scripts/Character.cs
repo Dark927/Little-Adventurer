@@ -133,7 +133,6 @@ public abstract class Character : MonoBehaviour
         return _characterType;
     }
 
-
     public virtual void SetState(StateType newStateType)
     {
         if (_currentState != null)
@@ -150,6 +149,12 @@ public abstract class Character : MonoBehaviour
             case StateType.State_normal:
                 {
                     _currentState = GetComponent<NormalState>();
+                    break;
+                }
+
+            case StateType.State_dash:
+                {
+                    _currentState = GetComponent<DashState>();
                     break;
                 }
 
