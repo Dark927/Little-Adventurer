@@ -37,6 +37,14 @@ public class Enemy : Character
         base.FixedUpdate();
     }
 
+    protected IEnumerator DeathRoutine(float deathDuration)
+    {
+        yield return new WaitForSeconds(deathDuration);
+
+        DropItem();
+        Destroy(gameObject);
+    }
+
     #endregion
 
 
@@ -92,9 +100,10 @@ public class Enemy : Character
     public override void DissolveMaterialDeath(float dissolveHeightStart, float dissolveHeightEnd, float dissolveDuration, float startDelay = 0f)
     {
         base.DissolveMaterialDeath(dissolveHeightStart, dissolveHeightEnd, dissolveDuration, startDelay);
-
-        DropItem();
+        StartCoroutine(DeathRoutine(startDelay + dissolveDuration));
     }
+
+
 
     #endregion
 }

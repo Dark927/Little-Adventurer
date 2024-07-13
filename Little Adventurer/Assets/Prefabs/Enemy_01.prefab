@@ -217,7 +217,7 @@ MonoBehaviour:
   ActualImpactOn: {x: 0, y: 0, z: 0}
   _characterType: 1
   _dropItem: {fileID: 6253350662342004611, guid: b0c28805f629714418aee17ac7423a2a, type: 3}
-  _invincibleDuration: 1
+  _invincibleDuration: 0.5
 --- !u!114 &2486484947846328934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,6 +247,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnDuration: 2
+  dissolveMaterialStart: -10
+  dissolveMaterialEnd: 20
+  dissolveDuration: 2
+  startDelay: 0
 --- !u!114 &7776872222915868147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,6 +289,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebef714c748c570489edcb7582e87cb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dissolveMaterialStart: 20
+  dissolveMaterialEnd: -10
+  dissolveDuration: 2
+  startDelay: 2
 --- !u!114 &1876993246151321829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,7 +300,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5458276002204155781}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91b32d05dc50f8e499561a71784569e8, type: 3}
   m_Name: 
@@ -309,7 +317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f79b153298f7be04ab583575ef253162, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHp: 400
+  _maxHp: 200
 --- !u!1001 &2290573133251649444
 PrefabInstance:
   m_ObjectHideFlags: 0

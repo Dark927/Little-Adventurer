@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Spawner : MonoBehaviour
 {
@@ -15,9 +15,10 @@ public class Spawner : MonoBehaviour
     [Space]
 
     [SerializeField] private BoxCollider _triggerCollider;
-
+    [SerializeField] private UnityEvent _event;
 
     private List<SpawnPoint> _spawnPointsList;
+    private List<Enemy> _spawnedEnemiesList;
     private bool _hasSpawned = false;
 
     #endregion
@@ -33,6 +34,26 @@ public class Spawner : MonoBehaviour
     {
         SpawnPoint[] spawnPointsArray = transform.parent.GetComponentsInChildren<SpawnPoint>();
         _spawnPointsList = new List<SpawnPoint>(spawnPointsArray);
+        _spawnedEnemiesList = new List<Enemy>();
+    }
+
+    private void Update()
+    {
+        if (!_hasSpawned)
+            return;
+
+        for(int i = 0; i < _spawnedEnemiesList.Count; ++i)
+        {
+            if(_spawnedEnemiesList[i].GetCurrentStateType() == StateType.State_dead)
+            {
+                _spawnedEnemiesList.RemoveAt(i);
+            }
+        }
+
+        if (_event != null && (_spawnedEnemiesList.Count == 0))
+        {
+            _event.Invoke();
+        }
     }
 
     private void SpawnCharacters()
@@ -42,9 +63,11 @@ public class Spawner : MonoBehaviour
 
         _hasSpawned = true;
 
-        foreach(SpawnPoint spawnPoint in _spawnPointsList)
+        foreach (SpawnPoint spawnPoint in _spawnPointsList)
         {
-            Instantiate(spawnPoint.EnemyToSpawn, spawnPoint.transform.position, spawnPoint.transform.rotation);
+            GameObject enemyObject = Instantiate(spawnPoint.EnemyToSpawn, spawnPoint.transform.position, spawnPoint.transform.rotation);
+
+            _spawnedEnemiesList.Add(enemyObject.GetComponent<Enemy>());
         }
     }
 
@@ -52,7 +75,7 @@ public class Spawner : MonoBehaviour
     {
         Player player = other.GetComponent<Player>();
 
-        if(player != null)
+        if (player != null)
         {
             SpawnCharacters();
         }

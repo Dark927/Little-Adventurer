@@ -8,20 +8,20 @@ public class Player : Character
 
     #region Fields
 
-    protected PlayerInput _playerInput;
-    protected float _verticalVelocity;
-    protected Quaternion _cameraRotationEuler = Quaternion.Euler(0, -45, 0);
+    private PlayerInput _playerInput;
+    private float _verticalVelocity;
+    private Quaternion _cameraRotationEuler = Quaternion.Euler(0, -45, 0);
 
-    protected int _cointsAmount = 0;
+    private int _cointsAmount = 0;
 
     [Space]
     [Header("Falling Settings")]
     [Space]
 
-    [SerializeField] protected string _groundLayerName = "ground";
-    [SerializeField] protected float _minDistanceToFall = 0.2f;
-    [SerializeField] protected float _maxDistanceToFall = 10f;
-    [SerializeField] protected StateType[] _fallingIgnoreStates = { StateType.State_dash, StateType.State_spawn };
+    [SerializeField] private string _groundLayerName = "ground";
+    [SerializeField] private float _minDistanceToFall = 0.2f;
+    [SerializeField] private float _maxDistanceToFall = 10f;
+    [SerializeField] private StateType[] _fallingIgnoreStates = { StateType.State_dash, StateType.State_spawn };
 
 
     #endregion
@@ -46,6 +46,15 @@ public class Player : Character
 
         HandleAirbone();
     }
+
+    #endregion
+
+
+    // ----------------------------------------------------------------------------------
+    // Private Methods
+    // ----------------------------------------------------------------------------------
+
+    #region Private Methods
 
     private void HandleAirbone()
     {

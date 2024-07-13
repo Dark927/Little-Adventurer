@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
@@ -23,6 +24,13 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float _attackTimeDelay = 0.5f;
     [SerializeField] private float _dashTimeDelay = 2f;
 
+
+    [Space]
+    [Header("States Settings")]
+    [Space]
+
+    [SerializeField] private List<StateType> _blockInputStates;
+
     private bool _isAttackReloaded = true;
     private bool _isDashReloaded = true;
 
@@ -33,8 +41,8 @@ public class PlayerInput : MonoBehaviour
     private float _horizontalInput;
     private float _verticalInput;
 
-    public bool IsAttackButtonDown = false;
-    public bool IsDashButtonDown = false;
+    [HideInInspector] public bool IsAttackButtonDown = false;
+    [HideInInspector] public bool IsDashButtonDown = false;
 
     #endregion
 
@@ -81,9 +89,9 @@ public class PlayerInput : MonoBehaviour
 
         if (stateCondition && _characterController.isGrounded)
         {
-            StateType currentState = _character.GetCurrentStateType();
+            StateType currentStateType = _character.GetCurrentStateType();
 
-            if (!(currentState == StateType.State_attack))
+            if (!IsInputBlocked(currentStateType))
             {
                 _character.SetState(stateToApply);
 
@@ -92,6 +100,19 @@ public class PlayerInput : MonoBehaviour
             }
             stateCondition = false;
         }
+    }
+
+    private bool IsInputBlocked(StateType currentStateType)
+    {
+        foreach (StateType blockType in _blockInputStates)
+        {
+            if (currentStateType == blockType)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private IEnumerator ReloadStateRoutine(StateType reloadState, float reloadTime)

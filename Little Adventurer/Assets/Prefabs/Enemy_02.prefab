@@ -188,7 +188,7 @@ MonoBehaviour:
   ActualImpactOn: {x: 0, y: 0, z: 0}
   _characterType: 1
   _dropItem: {fileID: 6253350662342004611, guid: b0c28805f629714418aee17ac7423a2a, type: 3}
-  _invincibleDuration: 1
+  _invincibleDuration: 0.5
 --- !u!114 &1340666589282513974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,6 +218,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnDuration: 2
+  dissolveMaterialStart: -10
+  dissolveMaterialEnd: 20
+  dissolveDuration: 2
+  startDelay: 0
 --- !u!114 &6626982940303160227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,6 +260,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebef714c748c570489edcb7582e87cb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dissolveMaterialStart: 20
+  dissolveMaterialEnd: -10
+  dissolveDuration: 2
+  startDelay: 2
 --- !u!114 &3032803416825884341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,7 +271,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8909655878462716373}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91b32d05dc50f8e499561a71784569e8, type: 3}
   m_Name: 

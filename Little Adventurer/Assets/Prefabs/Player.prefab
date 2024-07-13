@@ -79,9 +79,9 @@ GameObject:
   - component: {fileID: 538702759}
   - component: {fileID: 9137307982605156303}
   - component: {fileID: 2881117808346883204}
+  - component: {fileID: 2487949191013221254}
   - component: {fileID: 75068878787925957}
   - component: {fileID: 538702760}
-  - component: {fileID: 2487949191013221254}
   - component: {fileID: 538702762}
   m_Layer: 0
   m_Name: Player
@@ -163,6 +163,7 @@ MonoBehaviour:
   _dashKeyCode: 32
   _attackTimeDelay: 1
   _dashTimeDelay: 2
+  _blockInputStates: 0100000003000000
   IsAttackButtonDown: 0
   IsDashButtonDown: 0
 --- !u!114 &4140908888495929004
@@ -264,6 +265,19 @@ MonoBehaviour:
   dissolveMaterialEnd: -10
   dissolveDuration: 2
   startDelay: 2
+--- !u!114 &2487949191013221254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4140908888495928982}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5128fbf1fa830804ab8a06c9949c6307, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dashSpeed: 9
 --- !u!114 &75068878787925957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,19 +303,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHp: 100
---- !u!114 &2487949191013221254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4140908888495928982}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5128fbf1fa830804ab8a06c9949c6307, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _dashSpeed: 9
 --- !u!114 &538702762
 MonoBehaviour:
   m_ObjectHideFlags: 0

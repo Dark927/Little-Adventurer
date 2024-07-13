@@ -34,6 +34,7 @@ public class HurtedState : MonoBehaviour, IState
         if (_character.ActualImpactOn.magnitude > 0.2f)
         {
             _character.SetMovementVelocity(_character.ActualImpactOn * Time.deltaTime);
+            _character.Move();
         }
 
         _character.ActualImpactOn = Vector3.Lerp(_character.ActualImpactOn, Vector3.zero,  _impactDurationTime * Time.deltaTime);
@@ -57,6 +58,7 @@ public class HurtedState : MonoBehaviour, IState
     {
         enabled = true;
         _animator.SetTrigger("Hurted");
+        _character.SetMovementVelocity(Vector3.zero);
     }
 
     public void Exit()
