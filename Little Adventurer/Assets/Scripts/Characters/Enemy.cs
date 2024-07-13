@@ -71,7 +71,7 @@ public class Enemy : Character
 
             Quaternion newRotation = Quaternion.LookRotation(_targetPlayer.position - transform.position);
             transform.rotation = newRotation;
-            SetState(StateType.State_attack);
+            SetState(IState.TYPE.Attack);
         }
     }
 

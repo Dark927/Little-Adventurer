@@ -21,7 +21,7 @@ public class Player : Character
     [SerializeField] private string _groundLayerName = "ground";
     [SerializeField] private float _minDistanceToFall = 0.2f;
     [SerializeField] private float _maxDistanceToFall = 10f;
-    [SerializeField] private StateType[] _fallingIgnoreStates = { StateType.State_dash, StateType.State_spawn };
+    [SerializeField] private IState.TYPE[] _fallingIgnoreStates = { IState.TYPE.Dash, IState.TYPE.Spawn };
 
 
     #endregion
@@ -62,9 +62,9 @@ public class Player : Character
 
         bool isFalling = true;
 
-        foreach (StateType stateType in _fallingIgnoreStates)
+        foreach (IState.TYPE ignoreState in _fallingIgnoreStates)
         {
-            if (_currentStateType == stateType)
+            if (_currentState.Type == ignoreState)
             {
                 isFalling = false;
                 break;
@@ -139,7 +139,7 @@ public class Player : Character
         }
     }
 
-    public override void SetState(StateType newStateType)
+    public override void SetState(IState.TYPE newStateType)
     {
         base.SetState(newStateType);
     }

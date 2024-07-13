@@ -44,7 +44,7 @@ public class Spawner : MonoBehaviour
 
         for(int i = 0; i < _spawnedEnemiesList.Count; ++i)
         {
-            if(_spawnedEnemiesList[i].GetCurrentStateType() == StateType.State_dead)
+            if(_spawnedEnemiesList[i].CurrentState.Type == IState.TYPE.Dead)
             {
                 _spawnedEnemiesList.RemoveAt(i);
             }

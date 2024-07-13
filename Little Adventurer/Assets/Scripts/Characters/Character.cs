@@ -1,11 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public enum CharacterType
-{
-    Character_player = 0,
-    Character_enemy = 1,
-}
+
 
 [RequireComponent(
     typeof(NormalState),
@@ -15,6 +11,13 @@ public enum CharacterType
 
 public abstract class Character : MonoBehaviour
 {
+    public enum TYPE
+    {
+        Player = 0,
+        Enemy = 1,
+    }
+
+
     // ----------------------------------------------------------------------------------
     // Fields
     // ----------------------------------------------------------------------------------
@@ -36,7 +39,6 @@ public abstract class Character : MonoBehaviour
     protected DamageCaster _damageCaster;
 
     protected IState _currentState;
-    protected StateType _currentStateType;
 
     protected MaterialPropertyBlock _materialPropertyBlock;
     protected SkinnedMeshRenderer _skinnedMeshRenderer;
@@ -47,14 +49,13 @@ public abstract class Character : MonoBehaviour
     [Header("Main Settings")]
     [Space]
 
-    [SerializeField] protected CharacterType _characterType;
+    [SerializeField] protected TYPE _type;
     [SerializeField] protected GameObject _dropItem;
 
     [SerializeField] protected float _invincibleDuration = 2f;
     protected bool _isInvincible = false;
 
     #endregion
-
 
     // ----------------------------------------------------------------------------------
     // Abstract Methods
@@ -88,7 +89,7 @@ public abstract class Character : MonoBehaviour
 
     private void Start()
     {
-        SetState(StateType.State_spawn);
+        SetState(IState.TYPE.Spawn);
     }
 
     protected virtual void FixedUpdate()
@@ -162,19 +163,19 @@ public abstract class Character : MonoBehaviour
         get { return _isDead; }
     }
 
-    public CharacterType GetCharacterType()
+    public TYPE Type
     {
-        return _characterType;
+        get { return _type; }
     }
 
-    public StateType GetCurrentStateType()
+    public IState CurrentState
     {
-        return _currentState.CurrentStateType;
+        get { return _currentState; }
     }
 
     public void ResetNormalState()
     {
-        SetState(StateType.State_normal);
+        SetState(IState.TYPE.Normal);
     }
 
     public void SetSlideVelocity(Vector3 slideVelocity)
@@ -198,7 +199,7 @@ public abstract class Character : MonoBehaviour
     }
 
 
-    public virtual void SetState(StateType newStateType)
+    public virtual void SetState(IState.TYPE newStateType)
     {
         if (_currentState != null)
         {
@@ -206,42 +207,40 @@ public abstract class Character : MonoBehaviour
         }
 
 
-        _currentStateType = newStateType;
-
-        switch (_currentStateType)
+        switch (newStateType)
         {
-            default:            
-            case StateType.State_normal:
+            default:
+            case IState.TYPE.Normal:
                 {
                     _currentState = GetComponent<NormalState>();
                     break;
                 }
 
-            case StateType.State_dash:
+            case IState.TYPE.Dash:
                 {
                     _currentState = GetComponent<DashState>();
                     break;
                 }
 
-            case StateType.State_attack:
+            case IState.TYPE.Attack:
                 {
                     _currentState = GetComponent<AttackState>();
                     break;
                 }
 
-            case StateType.State_hurted:
+            case IState.TYPE.Hurted:
                 {
                     _currentState = GetComponent<HurtedState>();
                     break;
                 }
 
-            case StateType.State_spawn:
+            case IState.TYPE.Spawn:
                 {
                     _currentState = GetComponent<SpawnState>();
                     break;
                 }
 
-            case StateType.State_dead:
+            case IState.TYPE.Dead:
                 {
                     _currentState = GetComponent<DeadState>();
                     _isDead = true;

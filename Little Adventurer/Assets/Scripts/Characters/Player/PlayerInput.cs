@@ -29,7 +29,7 @@ public class PlayerInput : MonoBehaviour
     [Header("States Settings")]
     [Space]
 
-    [SerializeField] private List<StateType> _blockInputStates;
+    [SerializeField] private List<IState.TYPE> _blockInputStates;
 
     private bool _isAttackReloaded = true;
     private bool _isDashReloaded = true;
@@ -61,8 +61,8 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
-        HandleInputState(_attackKeyCode, ref IsAttackButtonDown, StateType.State_attack, ref _isAttackReloaded, _attackTimeDelay);
-        HandleInputState(_dashKeyCode, ref IsDashButtonDown, StateType.State_dash, ref _isDashReloaded, _dashTimeDelay);
+        HandleInputState(_attackKeyCode, ref IsAttackButtonDown, IState.TYPE.Attack, ref _isAttackReloaded, _attackTimeDelay);
+        HandleInputState(_dashKeyCode, ref IsDashButtonDown, IState.TYPE.Dash, ref _isDashReloaded, _dashTimeDelay);
 
         HandleMovementInput();
     }
@@ -73,7 +73,7 @@ public class PlayerInput : MonoBehaviour
         _verticalInput = Input.GetAxisRaw("Vertical");
     }
 
-    private void HandleInputState(KeyCode stateKey, ref bool stateCondition, StateType stateToApply, ref bool isReloaded, float reloadTime = 0f)
+    private void HandleInputState(KeyCode stateKey, ref bool stateCondition, IState.TYPE stateToApply, ref bool isReloaded, float reloadTime = 0f)
     {
         if (!isReloaded)
             return;
@@ -89,7 +89,7 @@ public class PlayerInput : MonoBehaviour
 
         if (stateCondition && _characterController.isGrounded)
         {
-            StateType currentStateType = _character.GetCurrentStateType();
+            IState.TYPE currentStateType = _character.CurrentState.Type;
 
             if (!IsInputBlocked(currentStateType))
             {
@@ -102,9 +102,9 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
-    private bool IsInputBlocked(StateType currentStateType)
+    private bool IsInputBlocked(IState.TYPE currentStateType)
     {
-        foreach (StateType blockType in _blockInputStates)
+        foreach (IState.TYPE blockType in _blockInputStates)
         {
             if (currentStateType == blockType)
             {
@@ -115,7 +115,7 @@ public class PlayerInput : MonoBehaviour
         return false;
     }
 
-    private IEnumerator ReloadStateRoutine(StateType reloadState, float reloadTime)
+    private IEnumerator ReloadStateRoutine(IState.TYPE reloadState, float reloadTime)
     {
         // Reload time delay 
 
@@ -129,13 +129,13 @@ public class PlayerInput : MonoBehaviour
                     break;
                 }
 
-            case StateType.State_attack:
+            case IState.TYPE.Attack:
                 {
                     _isAttackReloaded = true;
                     break;
                 }
 
-            case StateType.State_dash:
+            case IState.TYPE.Dash:
                 {
                     _isDashReloaded = true;
                     break;

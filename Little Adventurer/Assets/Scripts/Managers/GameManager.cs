@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckGameOver()
     {
-        if (_player.GetCurrentStateType() == StateType.State_dead)
+        if (_player.CurrentState.Type == IState.TYPE.Dead)
         {
             _gameOver = true;
             GameOver();

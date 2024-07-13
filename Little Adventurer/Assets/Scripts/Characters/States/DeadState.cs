@@ -22,7 +22,7 @@ public class DeadState : MonoBehaviour, IState
     Character _character;
     Animator _animator;
 
-    private StateType _stateType = StateType.State_dead;
+    private IState.TYPE _stateType = IState.TYPE.Dead;
 
     #endregion
 
@@ -47,7 +47,7 @@ public class DeadState : MonoBehaviour, IState
 
     #region Public Methods
 
-    public StateType CurrentStateType
+    public IState.TYPE Type
     {
         get { return _stateType; }
     }

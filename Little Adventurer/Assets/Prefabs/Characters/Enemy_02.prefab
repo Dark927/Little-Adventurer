@@ -186,7 +186,7 @@ MonoBehaviour:
   Gravity: -20
   _movementSpeed: 2
   ActualImpactOn: {x: 0, y: 0, z: 0}
-  _characterType: 1
+  _type: 1
   _dropItem: {fileID: 6253350662342004611, guid: b0c28805f629714418aee17ac7423a2a, type: 3}
   _invincibleDuration: 0.5
 --- !u!114 &1340666589282513974

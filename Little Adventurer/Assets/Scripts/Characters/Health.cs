@@ -59,7 +59,7 @@ public class Health : MonoBehaviour
     {
         if (_currentHp <= 0)
         {
-            _character.SetState(StateType.State_dead);
+            _character.SetState(IState.TYPE.Dead);
             _currentHp = 0;
         }
         else
@@ -68,7 +68,7 @@ public class Health : MonoBehaviour
 
             // Enemies can be stunned by 25% chance 
 
-            if (_character.GetCharacterType() == CharacterType.Character_enemy)
+            if (_character.Type == Character.TYPE.Enemy)
             {
                 mustStunned = (Random.Range(0, 4) == 0);
             }
@@ -80,7 +80,7 @@ public class Health : MonoBehaviour
 
             if (mustStunned)
             {
-                _character.SetState(StateType.State_hurted);
+                _character.SetState(IState.TYPE.Hurted);
                 _character.AddImpact(attackerPosition, attackForce);
             }
         }

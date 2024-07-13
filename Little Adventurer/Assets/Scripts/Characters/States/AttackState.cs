@@ -18,7 +18,7 @@ public class AttackState : MonoBehaviour, IState
     private DamageCaster _damageCaster;
 
     private float _attackAnimationDuration;
-    private StateType _stateType = StateType.State_attack;
+    private IState.TYPE _stateType = IState.TYPE.Attack;
 
 
     #endregion
@@ -62,7 +62,6 @@ public class AttackState : MonoBehaviour, IState
     private void AttackCombo()
     {
         CharacterController _characterController = GetComponent<CharacterController>();
-        PlayerInput _playerInput = GetComponent<PlayerInput>();
 
         if (Input.GetMouseButtonDown(0) && _characterController.isGrounded)
         {
@@ -73,7 +72,7 @@ public class AttackState : MonoBehaviour, IState
 
             if ((currentClipName != lastAttackName) && (_attackAnimationDuration > 0.5f) && (_attackAnimationDuration <= 0.7f))
             {
-                _character.SetState(StateType.State_attack);
+                _character.SetState(IState.TYPE.Attack);
                 _character.ConfigureMovement();
             }
         }
@@ -88,7 +87,7 @@ public class AttackState : MonoBehaviour, IState
 
     #region Public Methods
 
-    public StateType CurrentStateType
+    public IState.TYPE Type
     {
         get { return _stateType; }
     }
@@ -107,7 +106,7 @@ public class AttackState : MonoBehaviour, IState
             _damageCaster.DisableDamageCaster();
         }
 
-        if(_character.GetCharacterType() == CharacterType.Character_player)
+        if(_character.Type == Character.TYPE.Player)
         {
             GetComponent<PlayerVFXManager>().StopBlades();
         }

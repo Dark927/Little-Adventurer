@@ -11,7 +11,7 @@ public class DashState : MonoBehaviour, IState
     [SerializeField] private float _dashSpeed = 9f;
     private Character _character;
     private Animator _animator;
-    private StateType _stateType = StateType.State_dash;
+    private IState.TYPE _stateType = IState.TYPE.Dash;
 
     private Vector3 _floorNormal;
 
@@ -57,7 +57,7 @@ public class DashState : MonoBehaviour, IState
 
     #region Public Methods
 
-    public StateType CurrentStateType
+    public IState.TYPE Type
     {
         get { return _stateType; }
     }

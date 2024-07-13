@@ -29,7 +29,7 @@ public class SpawnState : MonoBehaviour, IState
     Character _character;
     CharacterController _characterController;
 
-    private StateType _stateType = StateType.State_spawn;
+    private IState.TYPE _stateType = IState.TYPE.Spawn;
 
     #endregion
 
@@ -52,7 +52,7 @@ public class SpawnState : MonoBehaviour, IState
 
         if(_currentSpawnTime > _spawnDuration)
         {
-            _character.SetState(StateType.State_normal);
+            _character.SetState(IState.TYPE.Normal);
         }
     }
 
@@ -65,7 +65,7 @@ public class SpawnState : MonoBehaviour, IState
 
     #region Public Methods
 
-    public StateType CurrentStateType
+    public IState.TYPE Type
     {
         get { return _stateType; }
     }

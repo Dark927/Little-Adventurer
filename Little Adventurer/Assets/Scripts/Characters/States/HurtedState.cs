@@ -12,7 +12,7 @@ public class HurtedState : MonoBehaviour, IState
     private Animator _animator;
 
     private float _impactDurationTime = 5f;
-    private StateType _stateType = StateType.State_hurted;
+    private IState.TYPE _stateType = IState.TYPE.Hurted;
 
     #endregion
 
@@ -49,7 +49,7 @@ public class HurtedState : MonoBehaviour, IState
 
     #region Public Methods
 
-    public StateType CurrentStateType
+    public IState.TYPE Type
     {
         get { return _stateType; }
     }

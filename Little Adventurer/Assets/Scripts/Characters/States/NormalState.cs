@@ -9,7 +9,7 @@ public class NormalState : MonoBehaviour, IState
     #region Fields
 
     private Character _character;
-    private StateType _stateType = StateType.State_normal;
+    private IState.TYPE _stateType = IState.TYPE.Normal;
 
 
     #endregion
@@ -41,7 +41,7 @@ public class NormalState : MonoBehaviour, IState
 
     #region Public Methods
 
-    public StateType CurrentStateType 
+    public IState.TYPE Type 
     { 
         get { return _stateType; } 
     }
