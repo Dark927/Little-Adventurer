@@ -1,6 +1,9 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PickUp : MonoBehaviour
+[RequireComponent(typeof(Player))]
+public class PlayerCoins : MonoBehaviour
 {
     // ----------------------------------------------------------------------------------
     // Fields
@@ -8,28 +11,21 @@ public abstract class PickUp : MonoBehaviour
 
     #region Fields
 
-    [SerializeField] protected int _value;
+    private int _coinsAmount = 0;
 
     #endregion
 
 
     // ----------------------------------------------------------------------------------
-    // Protected Methods
+    // Public Methods
     // ----------------------------------------------------------------------------------
 
-    #region Protected Methods
+    #region Public Methods
 
-    protected virtual void OnTriggerEnter(Collider other)
+    public void AddCoins(int coins)
     {
-        Character character = other.GetComponent<Character>();
-
-        if(character != null)
-        {
-            OnPickUp(character);
-        }
+        _coinsAmount += coins;
     }
-
-    protected abstract void OnPickUp(Character character);
 
     #endregion
 }

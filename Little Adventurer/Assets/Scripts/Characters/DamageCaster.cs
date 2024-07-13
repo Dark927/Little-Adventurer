@@ -45,6 +45,7 @@ public class DamageCaster : MonoBehaviour
                 if (!target.IsDead)
                 {
                     target.TakeDamage(_damage, transform.parent.position, _force);
+
                     PlaySlashVFX();
 
                     _damagedTargetsList.Add(other);
@@ -55,6 +56,9 @@ public class DamageCaster : MonoBehaviour
 
     private void PlaySlashVFX()
     {
+        if (_playerVFX == null)
+            return;
+
         RaycastHit hit;
 
         Vector3 originalPosition = transform.position + (-_damageCasterCollider.bounds.extents.z) * transform.forward;

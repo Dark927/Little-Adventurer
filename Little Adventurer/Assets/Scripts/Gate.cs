@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Gate : MonoBehaviour
@@ -10,9 +9,20 @@ public class Gate : MonoBehaviour
 
     #region Fields
 
-    [SerializeField] private float _openDuration = 2f;
-    [SerializeField] private float _targetPosY = -1.5f;
+    [Space]
+    [Header("Visual Settings")]
+    [Space]
+
     [SerializeField] private GameObject _gateVisual;
+
+    [Space]
+    [Header("Move Settings")]
+    [Space]
+
+    [SerializeField] private float _offsetY = 2f;
+    [SerializeField] private float _openDuration = 2f;
+    [SerializeField] private float _closeDuration = 2f;
+
     private Collider _gateCollider;
 
     #endregion
@@ -29,23 +39,40 @@ public class Gate : MonoBehaviour
         _gateCollider = GetComponent<Collider>();
     }
 
-    private IEnumerator OpenGateRoutine()
+    private IEnumerator MoveGateRoutine(Vector3 startPosition, Vector3 targetPosition, float duration)
     {
-        Vector3 startPosition = _gateVisual.transform.position;
-        Vector3 targetPosition = startPosition + Vector3.up * _targetPosY;
-
         float elapsedTime = 0f;
 
-        while(elapsedTime < _openDuration)
+        while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            _gateVisual.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / _openDuration);
+            _gateVisual.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
 
             yield return null;
         }
 
         _gateVisual.transform.position = targetPosition;
-        _gateCollider.enabled = false;
+    }
+
+    private IEnumerator ColliderStatusRoutine(float delay, bool enableStatus)
+    {
+        yield return new WaitForSeconds(delay);
+        _gateCollider.enabled = enableStatus;
+    }
+
+    private Vector3 CalculateTargetPosition(float offsetX, float offsetY, float offsetZ)
+    {
+        return _gateVisual.transform.position + new Vector3(offsetX, offsetY, offsetZ);
+    }
+
+    private Vector3 CalculateTargetPosition(Vector3 offset)
+    {
+        return _gateVisual.transform.position + offset;
+    }
+
+    private Vector3 GetCurrentPosition()
+    {
+        return _gateVisual.transform.position;
     }
 
     #endregion
@@ -59,7 +86,15 @@ public class Gate : MonoBehaviour
 
     public void Open()
     {
-        StartCoroutine(OpenGateRoutine());
+        StartCoroutine(ColliderStatusRoutine(_openDuration, false));
+        StartCoroutine(MoveGateRoutine(GetCurrentPosition(), CalculateTargetPosition(0, -_offsetY, 0), _openDuration));
+    }
+
+
+    public void Close()
+    {
+        StartCoroutine(ColliderStatusRoutine(0, true));
+        StartCoroutine(MoveGateRoutine(GetCurrentPosition(), CalculateTargetPosition(0, _offsetY, 0), _closeDuration));
     }
 
     #endregion

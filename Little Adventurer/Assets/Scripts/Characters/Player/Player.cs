@@ -12,7 +12,6 @@ public class Player : Character
     private float _verticalVelocity;
     private Quaternion _cameraRotationEuler = Quaternion.Euler(0, -45, 0);
 
-    private int _cointsAmount = 0;
 
     [Space]
     [Header("Falling Settings")]
@@ -150,11 +149,6 @@ public class Player : Character
         {
             base.TakeDamage(damage, attackerPosition, attackForce);
         }
-    }
-
-    public void TakeCoins(int coins)
-    {
-        _cointsAmount += coins;
     }
 
     public override void Move()

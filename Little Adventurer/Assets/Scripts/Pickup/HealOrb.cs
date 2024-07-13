@@ -1,8 +1,12 @@
 
-public class Heal_PickUp : PickUp
+public class HealOrb : PickUp
 {
     protected override void OnPickUp(Character character)
     {
+        if (character.Type != Character.TYPE.Player)
+            return;
+
+
         Health health = character.GetComponent<Health>();
         health.TakeHeal(_value);
 
@@ -14,5 +18,7 @@ public class Heal_PickUp : PickUp
         {
             playerVFX.PlayHeal();
         }
+
+        Destroy(gameObject);
     }
 }

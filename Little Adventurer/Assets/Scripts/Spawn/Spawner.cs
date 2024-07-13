@@ -15,11 +15,14 @@ public class Spawner : MonoBehaviour
     [Space]
 
     [SerializeField] private BoxCollider _triggerCollider;
-    [SerializeField] private UnityEvent _event;
+
+    [Space]
+
+    [SerializeField] private UnityEvent _onTriggerEnterEvent;
+    [SerializeField] private UnityEvent _onEnemiesDeadEvent;
 
     private List<SpawnPoint> _spawnPointsList;
     private List<Enemy> _spawnedEnemiesList;
-    private bool _hasSpawned = false;
 
     #endregion
 
@@ -39,30 +42,34 @@ public class Spawner : MonoBehaviour
 
     private void Update()
     {
-        if (!_hasSpawned)
+        if (_spawnedEnemiesList.Count == 0)
             return;
 
-        for(int i = 0; i < _spawnedEnemiesList.Count; ++i)
+        UpdateSpawnedEnemyList();
+        RaiseOnEnemyDeadEvent();
+    }
+
+    private void RaiseOnEnemyDeadEvent()
+    {
+        if (_onEnemiesDeadEvent != null && (_spawnedEnemiesList.Count == 0))
         {
-            if(_spawnedEnemiesList[i].CurrentState.Type == IState.TYPE.Dead)
+            _onEnemiesDeadEvent.Invoke();
+        }
+    }
+
+    private void UpdateSpawnedEnemyList()
+    {
+        for (int i = 0; i < _spawnedEnemiesList.Count; ++i)
+        {
+            if (_spawnedEnemiesList[i].CurrentState.Type == IState.TYPE.Dead)
             {
                 _spawnedEnemiesList.RemoveAt(i);
             }
-        }
-
-        if (_event != null && (_spawnedEnemiesList.Count == 0))
-        {
-            _event.Invoke();
         }
     }
 
     private void SpawnCharacters()
     {
-        if (_hasSpawned)
-            return;
-
-        _hasSpawned = true;
-
         foreach (SpawnPoint spawnPoint in _spawnPointsList)
         {
             GameObject enemyObject = Instantiate(spawnPoint.EnemyToSpawn, spawnPoint.transform.position, spawnPoint.transform.rotation);
@@ -78,6 +85,17 @@ public class Spawner : MonoBehaviour
         if (player != null)
         {
             SpawnCharacters();
+            RaiseTriggerEnterEvent();
+
+            _triggerCollider.enabled = false;
+        }
+    }
+
+    private void RaiseTriggerEnterEvent()
+    {
+        if (_onTriggerEnterEvent != null)
+        {
+            _onTriggerEnterEvent.Invoke();
         }
     }
 

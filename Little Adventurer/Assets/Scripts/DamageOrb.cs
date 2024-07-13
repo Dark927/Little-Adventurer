@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DamageOrb : MonoBehaviour
+public class DamageOrb : PickUp
 {
     // ----------------------------------------------------------------------------------
     // Fields
@@ -15,6 +15,11 @@ public class DamageOrb : MonoBehaviour
     [SerializeField] private float _speed = 9f;
     [SerializeField] private int _damage = 10;
     [SerializeField] private float _lifeTime = 5f;
+
+    [Space]
+    [Header("VFX Settings")]
+    [Space]
+
     [SerializeField] private ParticleSystem _hitVFX;
     private Rigidbody _rb;
 
@@ -39,20 +44,39 @@ public class DamageOrb : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 moveVector = transform.position + transform.forward * _speed * Time.deltaTime;
-        _rb.MovePosition(moveVector);
+        Fly();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Fly()
     {
-        Player player = other.GetComponent<Player>();
-
-        if (player != null)
+        if (_speed > 0f)
         {
-            player.TakeDamage(_damage, transform.position);
+            Vector3 moveVector = transform.position + transform.forward * _speed * Time.deltaTime;
+            _rb.MovePosition(moveVector);
         }
+    }
 
-        Explode();
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+
+        // if collides with another object like wall or enemy (not pickups), explode orb
+
+        bool isAnotherPickup = other.GetComponent<PickUp>();
+
+        if (!isAnotherPickup)
+        {
+            Explode();
+        }
+    }
+
+    protected override void OnPickUp(Character character)
+    {
+        if (character.Type == Character.TYPE.Player)
+        {
+            character.TakeDamage(_damage, transform.position);
+            Explode();
+        }
     }
 
     private void Explode(float timeDelay = 0f)

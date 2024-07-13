@@ -59,9 +59,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37be55350c121f943b796e66affa5879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openDuration: 2
-  _targetPosY: -2
   _gateVisual: {fileID: 3021347185788982011}
+  _offsetY: 2
+  _openDuration: 2
+  _closeDuration: 2
 --- !u!1001 &4008617129913958378
 PrefabInstance:
   m_ObjectHideFlags: 0

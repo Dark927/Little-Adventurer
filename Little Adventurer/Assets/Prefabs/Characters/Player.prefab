@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 4140908888495929004}
   - component: {fileID: 5300702425051084131}
   - component: {fileID: 538702758}
+  - component: {fileID: 4707623383756075429}
   - component: {fileID: 538702759}
   - component: {fileID: 9137307982605156303}
   - component: {fileID: 2881117808346883204}
@@ -216,13 +217,25 @@ MonoBehaviour:
   Gravity: -20
   _movementSpeed: 6
   ActualImpactOn: {x: 0, y: 0, z: 0}
-  _characterType: 0
+  _type: 0
   _dropItem: {fileID: 0}
   _invincibleDuration: 2
   _groundLayerName: ground
   _minDistanceToFall: 0.3
   _maxDistanceToFall: 10
   _fallingIgnoreStates: 0400000005000000
+--- !u!114 &4707623383756075429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4140908888495928982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afd181955929b4f489158b1b30dcd4f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &538702759
 MonoBehaviour:
   m_ObjectHideFlags: 0
