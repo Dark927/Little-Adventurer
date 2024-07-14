@@ -64,7 +64,6 @@ public abstract class Character : MonoBehaviour
     #region Abstract Methods
 
     public abstract void ConfigureMovement();
-    public abstract void Move();
 
     #endregion
 
@@ -198,6 +197,11 @@ public abstract class Character : MonoBehaviour
         _movementVelocity = velocity;
     }
 
+    public virtual void Move()
+    {
+        _characterController.Move(_movementVelocity);
+        _movementVelocity = Vector3.zero;
+    }
 
     public virtual void SetState(IState.TYPE newStateType)
     {

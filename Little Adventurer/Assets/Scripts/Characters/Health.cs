@@ -11,6 +11,7 @@ public class Health : MonoBehaviour
     #region Fields
 
     [SerializeField] private int _maxHp;
+    [SerializeField] [Range(0, 100)] private int _chanceToBeStunned;
     private int _currentHp;
 
     private Character _character;
@@ -78,19 +79,7 @@ public class Health : MonoBehaviour
         }
         else
         {
-            bool mustStunned;
-
-            // Enemies can be stunned by 25% chance 
-
-            if (_character.Type == Character.TYPE.Enemy)
-            {
-                mustStunned = (Random.Range(0, 4) == 0);
-            }
-            // Player can be stunned by 80% chance 
-            else
-            {
-                mustStunned = (Random.Range(0, 5) != 0);
-            }
+            bool mustStunned = Random.Range(0, 100) <= _chanceToBeStunned;
 
             if (mustStunned)
             {

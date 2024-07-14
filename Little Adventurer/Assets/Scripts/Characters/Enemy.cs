@@ -77,14 +77,19 @@ public class Enemy : Character
 
     public override void Move()
     {
-        // Enemy movement controlled by CharacterController and NavMesh Agent
+        // Enemy's normal movement controlled by CharacterController and NavMesh Agent
+
+        if(_currentState.Type == IState.TYPE.Hurted)
+        {
+            base.Move();
+        }
     }
 
     public override void TakeDamage(int damage, Vector3 attackerPosition = new Vector3(), float attackForce = 1f)
     {
         if (!_isDead && !_isInvincible)
         {
-            base.TakeDamage(damage);
+            base.TakeDamage(damage, attackerPosition, attackForce);
             _enemyVFX.BeingHitVFX(attackerPosition);
         }
     }

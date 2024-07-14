@@ -18,6 +18,7 @@ public class Player : Character
     [Space]
 
     [SerializeField] private string _groundLayerName = "ground";
+    [SerializeField] private string _cursorAreaLayerName = "cursorarea";
     [SerializeField] private float _minDistanceToFall = 0.2f;
     [SerializeField] private float _maxDistanceToFall = 10f;
     [Space]
@@ -60,27 +61,7 @@ public class Player : Character
     {
         // Check all falling conditions before setting animator value
 
-        bool isFalling = true;
-
-        foreach (IState.TYPE ignoreState in _fallingIgnoreStates)
-        {
-            if (_currentState.Type == ignoreState)
-            {
-                isFalling = false;
-                break;
-            }
-        }
-
-        if (isFalling)
-        {
-            RaycastHit hit;
-            Vector3 rayStartPosition = transform.position + Vector3.up * 0.1f;
-
-            if (Physics.Raycast(rayStartPosition, Vector3.down, out hit, _maxDistanceToFall, LayerMask.NameToLayer(_groundLayerName)))
-            {
-                isFalling = hit.distance > _minDistanceToFall;
-            }
-        }
+        bool isFalling = !IsGrounded();
 
         _animator.SetBool("Falling", isFalling);
         _playerInput.enabled = !isFalling;
@@ -88,19 +69,32 @@ public class Player : Character
 
     private void OnDrawGizmos()
     {
+        // Distance to the ground
+
         Gizmos.color = Color.yellow;
 
-        RaycastHit hit;
+        RaycastHit hitGroundInfo;
         Vector3 rayStartPosition = transform.position + Vector3.up * 0.1f;
 
-        if (Physics.Raycast(rayStartPosition, Vector3.down, out hit, _maxDistanceToFall, LayerMask.NameToLayer(_groundLayerName)))
+        if (Physics.Raycast(rayStartPosition, Vector3.down, out hitGroundInfo, _maxDistanceToFall, LayerMask.NameToLayer(_groundLayerName)))
         {
-            if (hit.distance > _minDistanceToFall)
+            if (hitGroundInfo.distance > _minDistanceToFall)
             {
                 Gizmos.color = Color.green;
             }
 
-            Gizmos.DrawLine(rayStartPosition, hit.point);
+            Gizmos.DrawLine(rayStartPosition, hitGroundInfo.point);
+        }
+
+
+        // Cursor position
+
+        Ray rayFromCursor = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit cursorHitInfo;
+
+        if (Physics.Raycast(rayFromCursor, out cursorHitInfo, 1000, 1 << LayerMask.NameToLayer(_cursorAreaLayerName)))
+        {
+            Gizmos.DrawWireSphere(cursorHitInfo.point, 1f);
         }
     }
 
@@ -152,10 +146,43 @@ public class Player : Character
         }
     }
 
-    public override void Move()
+    public bool IsGrounded()
     {
-        _characterController.Move(_movementVelocity);
-        _movementVelocity = Vector3.zero;
+        bool isFalling = true;
+
+        foreach (IState.TYPE ignoreState in _fallingIgnoreStates)
+        {
+            if (_currentState.Type == ignoreState)
+            {
+                isFalling = false;
+                break;
+            }
+        }
+
+        if (isFalling)
+        {
+            RaycastHit hit;
+            Vector3 rayStartPosition = transform.position + Vector3.up * 0.1f;
+
+            if (Physics.Raycast(rayStartPosition, Vector3.down, out hit, _maxDistanceToFall, LayerMask.NameToLayer(_groundLayerName)))
+            {
+                isFalling = hit.distance > _minDistanceToFall;
+            }
+        }
+
+        return !isFalling;
+    }
+
+    public void LookAtCursor()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 1000, 1 << LayerMask.NameToLayer(_cursorAreaLayerName)))
+        {
+            Vector3 lookDirection = hit.point - transform.position;
+            transform.rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
+        }
     }
 
     #endregion

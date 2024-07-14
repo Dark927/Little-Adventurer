@@ -44,9 +44,7 @@ public class AttackState : MonoBehaviour, IState
 
     private void ConfigurePlayerAttack()
     {
-        Player player = GetComponent<Player>();
-
-        if (player != null)
+        if (_character.Type == Character.TYPE.Player)
         {
             // Attack slide 
 
@@ -54,6 +52,7 @@ public class AttackState : MonoBehaviour, IState
             Vector3 slideVelocity = Vector3.Lerp(transform.forward * _attackSlideSpeed, Vector3.zero, timePassed / _attackSlideDuration);
 
             _character.SetSlideVelocity(slideVelocity);
+            _character.Move();
 
             AttackCombo();
         }
@@ -61,9 +60,9 @@ public class AttackState : MonoBehaviour, IState
 
     private void AttackCombo()
     {
-        CharacterController _characterController = GetComponent<CharacterController>();
+        Player player = GetComponent<Player>();
 
-        if (Input.GetMouseButtonDown(0) && _characterController.isGrounded)
+        if (Input.GetMouseButtonDown(0) && player.IsGrounded())
         {
             string currentClipName = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
             _attackAnimationDuration = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
@@ -75,6 +74,16 @@ public class AttackState : MonoBehaviour, IState
                 _character.SetState(IState.TYPE.Attack);
                 _character.ConfigureMovement();
             }
+        }
+    }
+
+    private void ConfigurePlayerLookDirection()
+    {
+        Player player = GetComponent<Player>();
+
+        if (player != null)
+        {
+            player.LookAtCursor();
         }
     }
 
@@ -95,8 +104,11 @@ public class AttackState : MonoBehaviour, IState
     public virtual void Execute()
     {
         enabled = true;
+
         _animator.SetTrigger("Attack");
         _attackStartTime = Time.time;
+
+        ConfigurePlayerLookDirection();
     }
 
     public virtual void Exit()
