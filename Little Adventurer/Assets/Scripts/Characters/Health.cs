@@ -17,7 +17,21 @@ public class Health : MonoBehaviour
 
     #endregion
 
-    
+
+    // ----------------------------------------------------------------------------------
+    // Properties
+    // ----------------------------------------------------------------------------------
+
+    #region Properties
+
+    public float CurrentHealthPercentage
+    {
+        get { return (float)_currentHp / _maxHp; }
+    }
+
+    #endregion
+
+
     // ----------------------------------------------------------------------------------
     // Private Methods
     // ----------------------------------------------------------------------------------
@@ -43,7 +57,7 @@ public class Health : MonoBehaviour
     {
         _currentHp += heal;
 
-        if(_currentHp > _maxHp)
+        if (_currentHp > _maxHp)
         {
             _currentHp = _maxHp;
         }

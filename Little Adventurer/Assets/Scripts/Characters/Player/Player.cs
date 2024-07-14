@@ -20,6 +20,7 @@ public class Player : Character
     [SerializeField] private string _groundLayerName = "ground";
     [SerializeField] private float _minDistanceToFall = 0.2f;
     [SerializeField] private float _maxDistanceToFall = 10f;
+    [Space]
     [SerializeField] private IState.TYPE[] _fallingIgnoreStates = { IState.TYPE.Dash, IState.TYPE.Spawn };
 
 

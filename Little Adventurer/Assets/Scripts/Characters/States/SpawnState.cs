@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class SpawnState : MonoBehaviour, IState
 {
@@ -27,7 +26,6 @@ public class SpawnState : MonoBehaviour, IState
     [SerializeField] private float startDelay = 0f;
 
     Character _character;
-    CharacterController _characterController;
 
     private IState.TYPE _stateType = IState.TYPE.Spawn;
 
@@ -43,7 +41,6 @@ public class SpawnState : MonoBehaviour, IState
     private void Awake()
     {
         _character = GetComponent<Character>();
-        _characterController = GetComponent<CharacterController>();
     }
 
     private void Update()

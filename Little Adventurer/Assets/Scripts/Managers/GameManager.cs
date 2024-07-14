@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,8 +9,24 @@ public class GameManager : MonoBehaviour
 
     #region Fields
 
+    public static GameManager instance;
+
     private Player _player;
     private bool _gameOver;
+
+    #endregion
+
+
+    // ----------------------------------------------------------------------------------
+    // Properties
+    // ----------------------------------------------------------------------------------
+
+    #region Properties
+
+    public Player PlayerCharacter
+    {
+        get { return _player; }
+    }
 
     #endregion
 
@@ -20,8 +37,17 @@ public class GameManager : MonoBehaviour
 
     #region Private Methods
 
-    private void Start()
+    private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(instance);
+        }
+
         _player = FindObjectOfType<Player>();
     }
 
@@ -53,12 +79,22 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        Debug.Log("Game Over");
+        UI.instance.SetStateUI(IStateUI.TYPE.GameOver);
     }
 
     public void GameFinished()
     {
-        Debug.Log("Game Finished");
+        UI.instance.SetStateUI(IStateUI.TYPE.GameFinished);
+    }
+
+    public void RestartGameScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void LoadGameScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 
     #endregion

@@ -1,6 +1,4 @@
 
-
-
 public interface IState
 {
     public enum TYPE

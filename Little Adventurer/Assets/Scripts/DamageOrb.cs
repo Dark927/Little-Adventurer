@@ -86,6 +86,13 @@ public class DamageOrb : PickUp
 
     private void OnDestroy()
     {
+        // Check if the game is quitting or the object is being destroyed due to scene unloading.
+
+        if (!gameObject.scene.isLoaded)
+        {
+            return;
+        }
+
         Instantiate(_hitVFX, transform.position, Quaternion.identity);
     }
 
